@@ -1,0 +1,179 @@
+
+# Sessions Durations (in seconds) -- total time and extend thresholds
+session.durations:
+    short:
+        total: 5400
+        extend: 1800
+
+    long:
+        total: 15724800
+        extend: 604800
+
+    restricted:
+        total: 1800
+        extend: 0
+
+# session settings
+session.secret: $SECRET_KEY
+session.key: __wr_sesh
+session.key_template: 'sesh:{0}'
+session.long_sessions_key: 'ls:{0}'
+
+default_max_size: 1000000000
+default_max_anon_size: 1000000000
+default_max_coll: 10
+
+upload_wait_secs: 30
+
+upload_status_expire: 120
+
+skip_key_secs: 330
+
+assets_path: ./webrecorder/config/assets.yaml
+
+temp_prefix: 'temp-'
+
+browser_req_url: 'http://shepherd:9020/api/browsers/request_browser/{browser}'
+browser_list_url: 'http://shepherd:9020/api/browsers/browsers'
+proxy_host: 'proxy'
+
+# time interval for websocket status updates (in seconds)
+status_update_secs: 1.0
+
+cache_template: 'cache:{0}'
+
+# Upstream url templates
+url_templates:
+    delete: '{record_host}/delete?user={user}&coll={coll}&rec={rec}&type={type}'
+    rename: '{record_host}/rename?from_user={from_user}&from_coll={from_coll}&from_rec={from_rec}&to_user={to_user}&to_coll={to_coll}&to_title={to_title}&to_rec={to_rec}'
+
+    # upload path
+    upload: '{record_host}/record/$upload?param.user={user}&param.coll={coll}&param.rec={rec}&put_record=stream&param.upid={upid}'
+
+    # core replay funcs
+    live: '{live_host}/live/resource/postreq?'
+
+    record: '{record_host}/record/live/resource/postreq?param.user={user}&param.coll={coll}&param.rec={rec}'
+    patch: '{record_host}/record/patch/resource/postreq?param.user={user}&param.coll={coll}&param.recorder.rec={rec}&param.replay.rec=*'
+    snapshot: '{record_host}/record/live/resource/postreq?param.user={user}&param.coll={coll}&param.rec={rec}&put_record=resource'
+
+    replay: '{replay_host}/replay/resource/postreq?param.replay.user={user}&param.replay.coll={coll}&param.replay.rec={rec}'
+    replay-coll: '{replay_host}/replay-coll/resource/postreq?param.user={user}&param.coll={coll}&param.rec=*'
+
+
+# Download paths
+download_paths:
+    filename: '{title}-{timestamp}.warc.gz'
+
+    rec: '{host}/{user}/{coll}/{rec}/$download'
+    coll: '{host}/{user}/{coll}/$download'
+
+download_chunk_encoded: false
+
+
+# Misc Settings
+invites_enabled: $REQUIRE_INVITES
+
+warcsign_private_key: ./keys/wr.pem
+warcsign_public_key: ./keys/wr_pub.pem
+
+email_sender: $EMAIL_SENDER
+email_smtp_url: $EMAIL_SMTP_URL
+
+metadata:
+    product: Webrecorder
+    type: default
+
+# Default Descriptions
+
+coll_desc: |
+    *This collection doesn't yet have a description.*
+
+user_desc: |
+    ## {0} archive
+
+    Available collections are listed below.
+
+# Default Collection created with new user
+# if not migrating temp collection
+default_coll:
+    id: 'default-collection'
+    title: 'Default Collection'
+    desc: |
+        *This is your first collection!*
+
+        Each collection contains _recordings_, which are sessions of your encounters with the web.
+
+        Attached to a recording are _bookmarks_. They serve as pointers into the recorded material.
+
+        Move recordings in between collections and show or hide bookmarks to curate your archive of the dynamic web.
+
+
+upload_coll:
+    id: 'uploaded-collection'
+    title: 'Uploaded Collection'
+    desc: 'This collection was automatically created from the upload of *{filename}*'
+
+
+
+# WARC Paths and Names
+#warc_path_templ: '{user}/{coll}/{rec}/'
+
+warc_path_templ: '{user}/'
+
+#storage_path_templ: 'accounts/{user}/collections/{coll}/archive/{rec}/{filename}'
+storage_path_templ: 'accounts/{user}/warcs/{filename}'
+
+warc_name_templ: 'rec-{timestamp}-{hostname}-{random}.warc.gz'
+
+full_warc_prefix: 'local+http://nginx:6090'
+
+
+# Redis Keys
+cdxj_key_templ: 'r:{user}:{coll}:{rec}:cdxj'
+
+cdxj_coll_key_templ: 'r:{user}:{coll}:*:cdxj'
+
+page_key_templ: 'r:{user}:{coll}:{rec}:page'
+
+info_key_templ:
+    rec: 'r:{user}:{coll}:{rec}:info'
+    coll: 'c:{user}:{coll}:info'
+    user: 'u:{user}:info'
+
+rec_list_key_templ: 'c:{user}:{coll}:recs'
+mount_list_key_templ: 'c:{user}:{coll}:mounts'
+
+upload_key_templ: 'u:{user}:upl:{upid}'
+
+tags_key: 'z:tags'
+user_tag_templ: 'r:{user}:{coll}:{rec}:tag:{tag}'
+
+mount_key_templ: 'r:{user}:{coll}:{rec}:cdxj_m'
+
+user_usage_key: 'h:user-usage'
+temp_usage_key: 'h:temp-usage'
+
+cookie_key_templ: 'r:{user}:{coll}:{rec}:{id}:cookie:'
+
+warc_key_templ: 'r:{user}:{coll}:{rec}:warc'
+warc_upload_wait_templ: 'w:{filename}'
+
+skip_key_templ: 'us:{user}:s:{url}'
+
+del_templ:
+    rec: 'r:{user}:{coll}:{rec}:*'
+    coll: '*:{user}:{coll}:*'
+    user: '*:{user}:*'
+
+storage_key_templ: 'st:{name}'
+
+
+# Recorder
+recorder_name: 'recorder'
+
+# Rewrite
+framed_replay: inverse
+
+query_html: time_info.html
+

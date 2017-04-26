@@ -1,0 +1,70 @@
+{% extends "main_bootstrap.html" %}
+
+{% block head %}
+
+{{ super() }}
+
+{% assets "user-js" %}
+<script type="text/javascript" src="{{ ASSET_URL }}"></script>
+{% endassets %}
+
+{% assets "user-css" %}
+<link href="{{ ASSET_URL }}" rel="stylesheet" />
+{% endassets %}
+
+
+
+
+{% include 'header.html' %}
+
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container wr-content">
+    {% block message %}
+
+    {{ super() }}
+
+    {% endblock %}
+
+    {% block content %}
+    {% if metadata.type == 'player' %}
+    {% include 'player_index.html' %}
+    {% else %}
+    <div class="row top-buffer">
+        <h1 class="text-center"><strong>{{ metadata.product }}</strong></h1>
+    </div>
+
+    <div class="row">
+        <h4 class="text-center" style="margin-bottom: 30px">解决部分地区链路堵塞或长城防火墙拦截问题</h4>
+    </div>
+
+    {% include 'homepage_message.html' %}
+
+    <div class="row top-buffer-lg bottom-buffer-lg">
+        {% include 'homepage_recorder.html' %}
+    </div>
+
+    {% if is_anon and invites_enabled %}
+    <div class="row top-buffer">
+        <div class="col-md-offset-1 col-md-10">
+            <h4>We are inviting users to build their own archives as we test this service.</h4>
+            <h4><a href="/_register">sign-up</a></h4>
+        </div>
+    </div>
+    {% endif %}
+
+
+
+    {% endif %}
+
+    {% endblock %}
+</div>
+
+{% block footer %}
+{% include 'footer.html' %}
+{% endblock %}
+
+{% endblock %}
